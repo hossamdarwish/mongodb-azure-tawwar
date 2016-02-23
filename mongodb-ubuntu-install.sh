@@ -347,10 +347,10 @@ tune_system
 install_mongodb
 
 # Step 4
-#configure_mongodb
+configure_mongodb
 
 # Step 5
-#start_mongodb
+start_mongodb
 
 # Step 6
 #configure_db_users
