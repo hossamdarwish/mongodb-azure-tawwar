@@ -296,7 +296,7 @@ processManagement:
 net:
     port: $MONGODB_PORT
 security:
-    #keyFile: "/etc/mongo-replicaset-key"
+    keyFile: "/etc/mongo-replicaset-key"
     authorization: "enabled"
 storage:
     dbPath: "$MONGODB_DATA/db"
