@@ -177,8 +177,11 @@ install_mongodb()
 	log "Downloading MongoDB package $PACKAGE_NAME from $PACKAGE_URL"
 
 	# Configure mongodb.list file with the correct location
-	apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-	echo "deb ${PACKAGE_URL} "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+	#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+	#echo "deb ${PACKAGE_URL} "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+    
+    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+    echo "deb ${PACKAGE_URL} "$(lsb_release -sc)"/mongodb-org/3.2 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.2.list
 
 	# Install updates
 	apt-get -y update
@@ -356,7 +359,7 @@ start_mongodb
 configure_db_users
 
 # Step 7
-#configure_replicaset
+configure_replicaset
 
 # Exit (proudly)
 exit 0
