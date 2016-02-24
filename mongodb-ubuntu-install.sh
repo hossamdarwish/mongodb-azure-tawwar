@@ -208,23 +208,23 @@ configure_datadisks()
 #############################################################################
 configure_replicaset()
 {
-	# log "Configuring a replica set $REPLICA_SET_NAME"
+	log "Configuring a replica set $REPLICA_SET_NAME"
 	
-	# echo "$REPLICA_SET_KEY_DATA" | tee "$REPLICA_SET_KEY_FILE" > /dev/null
-	# chown -R mongodb:mongodb "$REPLICA_SET_KEY_FILE"
-	# chmod 600 "$REPLICA_SET_KEY_FILE"
+	echo "$REPLICA_SET_KEY_DATA" | tee "$REPLICA_SET_KEY_FILE" > /dev/null
+	chown -R mongodb:mongodb "$REPLICA_SET_KEY_FILE"
+	chmod 600 "$REPLICA_SET_KEY_FILE"
 	
-	# # Enable replica set in the configuration file
-	# sed -i "s|#keyFile: \"\"$|keyFile: \"${REPLICA_SET_KEY_FILE}\"|g" /etc/mongod.conf
-	# sed -i "s|authorization: \"disabled\"$|authorization: \"enabled\"|g" /etc/mongod.conf
-	# sed -i "s|#replication:|replication:|g" /etc/mongod.conf
-	# sed -i "s|#replSetName:|replSetName:|g" /etc/mongod.conf
+	# Enable replica set in the configuration file
+	sed -i "s|#keyFile: \"\"$|keyFile: \"${REPLICA_SET_KEY_FILE}\"|g" /etc/mongod.conf
+	sed -i "s|authorization: \"disabled\"$|authorization: \"enabled\"|g" /etc/mongod.conf
+	sed -i "s|#replication:|replication:|g" /etc/mongod.conf
+	sed -i "s|#replSetName:|replSetName:|g" /etc/mongod.conf
 	
 	# Stop the currently running MongoDB daemon as we will need to reload its configuration
-	#stop_mongodb
+	stop_mongodb
 	
 	# Attempt to start the MongoDB daemon so that configuration changes take effect
-	#start_mongodb
+	start_mongodb
 	
 	# Initiate a replica set (only run this section on the very last node)
 	if [ "$IS_LAST_MEMBER" = true ]; then
@@ -278,11 +278,6 @@ configure_mongodb()
 	mkdir /var/run/mongodb
 	touch /var/run/mongodb/mongod.pid
 	chmod 777 /var/run/mongodb/mongod.pid
-    
-    echo "$REPLICA_SET_KEY_DATA" | tee "$REPLICA_SET_KEY_FILE" > /dev/null
-	chown -R mongodb:mongodb "$REPLICA_SET_KEY_FILE"
-	chmod 600 "$REPLICA_SET_KEY_FILE"
-    
 	
 	tee /etc/mongod.conf > /dev/null <<EOF
 systemLog:
@@ -296,8 +291,8 @@ processManagement:
 net:
     port: $MONGODB_PORT
 security:
-    keyFile: "/etc/mongo-replicaset-key"
-    authorization: "enabled"
+    #keyFile: ""
+    authorization: "disabled"
 storage:
     dbPath: "$MONGODB_DATA/db"
     directoryPerDB: true
@@ -361,7 +356,7 @@ start_mongodb
 configure_db_users
 
 # Step 7
-configure_replicaset
+#configure_replicaset
 
 # Exit (proudly)
 exit 0
