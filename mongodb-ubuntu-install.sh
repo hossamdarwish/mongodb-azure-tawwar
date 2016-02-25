@@ -271,23 +271,23 @@ configure_replicaset_simple()
 {
 	log "Configuring a replica set $REPLICA_SET_NAME"
 	
-	echo "$REPLICA_SET_KEY_DATA" | tee "$REPLICA_SET_KEY_FILE" > /dev/null
-	chown -R mongodb:mongodb "$REPLICA_SET_KEY_FILE"
-	chmod 600 "$REPLICA_SET_KEY_FILE"
+	sudo echo "$REPLICA_SET_KEY_DATA" | sudo tee "$REPLICA_SET_KEY_FILE" > /dev/null
+	sudo chown -R mongodb:mongodb "$REPLICA_SET_KEY_FILE"
+	sudo chmod 600 "$REPLICA_SET_KEY_FILE"
 	
 	# Enable replica set in the configuration file
-	# sed -i "s|#keyFile: \"\"$|keyFile: \"${REPLICA_SET_KEY_FILE}\"|g" /etc/mongod.conf
-	# sed -i "s|authorization: \"disabled\"$|authorization: \"enabled\"|g" /etc/mongod.conf
-	# sed -i "s|#replication:|replication:|g" /etc/mongod.conf
-	# sed -i "s|#replSetName:|replSetName:|g" /etc/mongod.conf
+	sed -i "s|#keyFile: \"\"$|keyFile: \"${REPLICA_SET_KEY_FILE}\"|g" /etc/mongod.conf
+	sed -i "s|authorization: \"disabled\"$|authorization: \"enabled\"|g" /etc/mongod.conf
+	sed -i "s|#replication:|replication:|g" /etc/mongod.conf
+	sed -i "s|#replSetName:|replSetName:|g" /etc/mongod.conf
 	
 	# Stop the currently running MongoDB daemon as we will need to reload its configuration
     # log "Stop mongo Configuring a replica set $REPLICA_SET_NAME"
-	# stop_mongodb
+	stop_mongodb
 	
 	# Attempt to start the MongoDB daemon so that configuration changes take effect
     # log "Start mongo Configuring a replica set $REPLICA_SET_NAME"
-	# start_mongodb
+	start_mongodb
     
     # log "Started mongo Configuring a replica set $REPLICA_SET_NAME"
 	
@@ -392,7 +392,7 @@ configure_db_users
 
 # Step 7
 #configure_replicaset
-#configure_replicaset_simple
+configure_replicaset_simple
 
 # Exit (proudly)
 exit 0
