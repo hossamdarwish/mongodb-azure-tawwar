@@ -67,8 +67,8 @@ log()
 {
 	# If you want to enable this logging add a un-comment the line below and add your account key 
 	#curl -X POST -H "content-type:text/plain" --data-binary "$(date) | ${HOSTNAME} | $1" https://logs-01.loggly.com/inputs/${LOGGING_KEY}/tag/redis-extension,${HOSTNAME}
-	#echo "$1"
-    echo "$1" >> ~/logs/me.log
+	echo "$1"
+    #echo "$1" >> ~/logs/me.log
 }
 
 log "Begin execution of MongoDB installation script extension on ${HOSTNAME}"
@@ -276,20 +276,20 @@ configure_replicaset_simple()
 	chmod 600 "$REPLICA_SET_KEY_FILE"
 	
 	# Enable replica set in the configuration file
-	sed -i "s|#keyFile: \"\"$|keyFile: \"${REPLICA_SET_KEY_FILE}\"|g" /etc/mongod.conf
-	sed -i "s|authorization: \"disabled\"$|authorization: \"enabled\"|g" /etc/mongod.conf
-	sed -i "s|#replication:|replication:|g" /etc/mongod.conf
-	sed -i "s|#replSetName:|replSetName:|g" /etc/mongod.conf
+	# sed -i "s|#keyFile: \"\"$|keyFile: \"${REPLICA_SET_KEY_FILE}\"|g" /etc/mongod.conf
+	# sed -i "s|authorization: \"disabled\"$|authorization: \"enabled\"|g" /etc/mongod.conf
+	# sed -i "s|#replication:|replication:|g" /etc/mongod.conf
+	# sed -i "s|#replSetName:|replSetName:|g" /etc/mongod.conf
 	
 	# Stop the currently running MongoDB daemon as we will need to reload its configuration
-    log "Stop mongo Configuring a replica set $REPLICA_SET_NAME"
-	stop_mongodb
+    # log "Stop mongo Configuring a replica set $REPLICA_SET_NAME"
+	# stop_mongodb
 	
 	# Attempt to start the MongoDB daemon so that configuration changes take effect
-    log "Start mongo Configuring a replica set $REPLICA_SET_NAME"
-	start_mongodb
+    # log "Start mongo Configuring a replica set $REPLICA_SET_NAME"
+	# start_mongodb
     
-    log "Started mongo Configuring a replica set $REPLICA_SET_NAME"
+    # log "Started mongo Configuring a replica set $REPLICA_SET_NAME"
 	
 	# Initiate a replica set (only run this section on the very last node)
 
@@ -392,7 +392,7 @@ configure_db_users
 
 # Step 7
 #configure_replicaset
-configure_replicaset_simple
+#configure_replicaset_simple
 
 # Exit (proudly)
 exit 0
