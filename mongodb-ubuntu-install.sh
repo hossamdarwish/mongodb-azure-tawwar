@@ -67,7 +67,8 @@ log()
 {
 	# If you want to enable this logging add a un-comment the line below and add your account key 
 	#curl -X POST -H "content-type:text/plain" --data-binary "$(date) | ${HOSTNAME} | $1" https://logs-01.loggly.com/inputs/${LOGGING_KEY}/tag/redis-extension,${HOSTNAME}
-	echo "$1"
+	#echo "$1"
+    echo "$1" >> ~/logs/me.log
 }
 
 log "Begin execution of MongoDB installation script extension on ${HOSTNAME}"
@@ -281,10 +282,14 @@ configure_replicaset_simple()
 	sed -i "s|#replSetName:|replSetName:|g" /etc/mongod.conf
 	
 	# Stop the currently running MongoDB daemon as we will need to reload its configuration
+    log "Stop mongo Configuring a replica set $REPLICA_SET_NAME"
 	stop_mongodb
 	
 	# Attempt to start the MongoDB daemon so that configuration changes take effect
+    log "Start mongo Configuring a replica set $REPLICA_SET_NAME"
 	start_mongodb
+    
+    log "Started mongo Configuring a replica set $REPLICA_SET_NAME"
 	
 	# Initiate a replica set (only run this section on the very last node)
 
