@@ -391,8 +391,8 @@ start_mongodb
 configure_db_users
 
 # Step 7
-#configure_replicaset
-configure_replicaset_simple
+configure_replicaset
+#configure_replicaset_simple
 
 # Exit (proudly)
 exit 0
