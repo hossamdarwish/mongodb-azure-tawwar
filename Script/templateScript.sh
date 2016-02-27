@@ -1,6 +1,7 @@
 
 cd /
-sudo mv /var/lib/waagent/Microsoft.OSTCExtensions.CustomScriptForLinux-1.2.2.0/download/0/app.js /opt/app.js
+#sudo mv /var/lib/waagent/Microsoft.OSTCExtensions.CustomScriptForLinux-1.2.2.0/download/0/app.js /opt/app.js
+sudo mv /var/lib/waagent/Microsoft.OSTCExtensions.CustomScriptForLinux-1.4.1.0/download/0/app.js /opt/app.js
 
 
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y update

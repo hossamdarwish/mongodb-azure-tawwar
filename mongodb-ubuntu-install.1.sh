@@ -68,6 +68,7 @@ log()
 	# If you want to enable this logging add a un-comment the line below and add your account key 
 	#curl -X POST -H "content-type:text/plain" --data-binary "$(date) | ${HOSTNAME} | $1" https://logs-01.loggly.com/inputs/${LOGGING_KEY}/tag/redis-extension,${HOSTNAME}
 	echo "$1"
+    #echo "$1" >> ~/logs/me.log
 }
 
 log "Begin execution of MongoDB installation script extension on ${HOSTNAME}"
@@ -177,10 +178,12 @@ install_mongodb()
 	log "Downloading MongoDB package $PACKAGE_NAME from $PACKAGE_URL"
 
 	# Configure mongodb.list file with the correct location
-	# apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-	# echo "deb ${PACKAGE_URL} "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+	#apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+	#echo "deb ${PACKAGE_URL} "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+    
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
     echo "deb ${PACKAGE_URL} "$(lsb_release -sc)"/mongodb-org/3.2 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+    #echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee /etc/apt/sources.list.d/mongodb.list
 
 	# Install updates
 	apt-get -y update
@@ -280,6 +283,8 @@ configure_mongodb()
 	# mkdir /var/run/mongodb
 	# touch /var/run/mongodb/mongod.pid
 	# chmod 777 /var/run/mongodb/mongod.pid
+    touch /var/run/mongod.pid
+	chmod 777 /var/run/mongod.pid
 	
 	tee /etc/mongod.conf > /dev/null <<EOF
 systemLog:
@@ -289,7 +294,7 @@ systemLog:
     logAppend: true
 processManagement:
     fork: true
-    #pidFilePath: "/var/run/mongodb/mongod.pid"
+    pidFilePath: "/var/run/mongod.pid"
 net:
     port: $MONGODB_PORT
 security:
@@ -359,7 +364,7 @@ configure_db_users
 
 # Step 7
 configure_replicaset
+#configure_replicaset_simple
 
 # Exit (proudly)
 exit 0
-
